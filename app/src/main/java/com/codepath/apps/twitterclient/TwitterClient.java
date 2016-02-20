@@ -1,6 +1,7 @@
 package com.codepath.apps.twitterclient;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -22,6 +23,8 @@ import org.scribe.builder.api.TwitterApi;
  * 
  */
 public class TwitterClient extends OAuthBaseClient {
+    private final static String LOG_TAG = TwitterClient.class.getSimpleName();
+
 	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
 	public static final String REST_URL = "https://api.twitter.com/1.1/"; // Change this, base API URL
 	public static final String REST_CONSUMER_KEY = "frJfLutG3OjHk6XQMSEkKq9fW";       // Change this
@@ -42,14 +45,18 @@ public class TwitterClient extends OAuthBaseClient {
 	 */
 
 	// Get home timeline
-	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+	public void getHomeTimeline(AsyncHttpResponseHandler handler, long offset) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Specify the params
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
 		params.put("since_id", 1);
+        if (offset != 0) {
+            params.put("max_id", offset);
+        }
 		// Execute the request
 		getClient().get(apiUrl, params, handler);
+        Log.d(LOG_TAG, "Looked for data with max_id = " + offset);
 	}
 
 	// Composing a tuit
