@@ -7,11 +7,11 @@ import com.google.gson.annotations.SerializedName;
  */
 public class User {
     // list attributes
+    @SerializedName("name")
     private String name;
-    @SerializedName("id")
-    private long uid;
+    @SerializedName("id") private long uid;
     @SerializedName("screen_name")
-    private String screenName;
+    private String userName;
     @SerializedName("profile_image_url")
     private String profileImageUrl;
 
@@ -23,8 +23,8 @@ public class User {
         return uid;
     }
 
-    public String getScreenName() {
-        return screenName;
+    public String getUserName() {
+        return userName;
     }
 
     public String getProfileImageUrl() {

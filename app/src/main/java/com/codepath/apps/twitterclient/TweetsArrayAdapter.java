@@ -48,11 +48,13 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Tweet tweet = tweets.get(position);
 
-        ((ViewHolderTweet)holder).tvUserName.setText(tweet.getUser().getScreenName());
+        ((ViewHolderTweet)holder).tvName.setText(tweet.getUser().getName());
         ((ViewHolderTweet)holder).tvBody.setText(tweet.getBody());
         ((ViewHolderTweet)holder).ivProfileImage.setImageResource(android.R.color.transparent);
         Glide.with(mContext).load(tweet.getUser().getProfileImageUrl()).into(
-                ((ViewHolderTweet)holder).ivProfileImage);
+                ((ViewHolderTweet) holder).ivProfileImage);
+        ((ViewHolderTweet)holder).tvUserName.setText("@" + tweet.getUser().getUserName());
+        ((ViewHolderTweet)holder).tvTimeElapsed.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
 
 
     }
@@ -66,6 +68,8 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Bind(R.id.tvUserName) TextView tvUserName;
         @Bind(R.id.tvBody) TextView tvBody;
         @Bind(R.id.ivProfileImage) ImageView ivProfileImage;
+        @Bind(R.id.tvTimeElapsed) TextView tvTimeElapsed;
+        @Bind(R.id.tvName) TextView tvName;
 
         public ViewHolderTweet(View view) {
             super(view);
