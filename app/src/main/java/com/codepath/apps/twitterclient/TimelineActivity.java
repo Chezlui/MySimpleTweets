@@ -9,16 +9,22 @@ import android.util.Log;
 
 import com.codepath.apps.twitterclient.adapters.DividerItemDecoration;
 import com.codepath.apps.twitterclient.models.Tweet;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FlipInBottomXAnimator;
 
 public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
@@ -43,6 +49,7 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.addItemDecoration(itemDecoration);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rvTweets.setLayoutManager(llm);
+        rvTweets.setItemAnimator(new FlipInBottomXAnimator());
 
 
         client = TwitterApplication.getRestClient(); // singleton client
@@ -62,7 +69,13 @@ public class TimelineActivity extends AppCompatActivity {
                 // Create model and added them to the adapter
                 // Load model data into listView
                 tweets.clear();
-                tweets.addAll(Tweet.fromJSONArray(json));
+
+                Type collectionType = new TypeToken<List<Tweet>>(){}.getType();
+                Gson gson = new GsonBuilder().create();
+
+                tweets.addAll(
+                        (ArrayList<Tweet>) gson.fromJson(json.toString(), collectionType));
+
                 aTweets.notifyDataSetChanged();
                 Log.d("DEBUG", aTweets.getItemCount() + "");
             }
