@@ -2,10 +2,12 @@ package com.codepath.apps.twitterclient;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.ListView;
 
+import com.codepath.apps.twitterclient.adapters.DividerItemDecoration;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -15,12 +17,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TimelineActivity extends AppCompatActivity {
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
+public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter aTweets;
-    private ListView lvTweets;
+    @Bind(R.id.rvTweets)
+    RecyclerView rvTweets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +33,16 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
 
-        lvTweets = (ListView) findViewById(R.id.lvTweets);
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(this, tweets);
-        lvTweets.setAdapter(aTweets);
+        rvTweets.setAdapter(aTweets);
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        rvTweets.addItemDecoration(itemDecoration);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(llm);
 
 
         client = TwitterApplication.getRestClient(); // singleton client
@@ -51,8 +61,10 @@ public class TimelineActivity extends AppCompatActivity {
                 // Deserialize JSON
                 // Create model and added them to the adapter
                 // Load model data into listView
-                aTweets.addAll(Tweet.fromJSONArray(json));
-                Log.d("DEBUG", aTweets.toString());
+                tweets.clear();
+                tweets.addAll(Tweet.fromJSONArray(json));
+                aTweets.notifyDataSetChanged();
+                Log.d("DEBUG", aTweets.getItemCount() + "");
             }
 
 

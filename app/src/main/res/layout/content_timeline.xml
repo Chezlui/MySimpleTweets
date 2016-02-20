@@ -8,10 +8,10 @@
     tools:context="com.codepath.apps.twitterclient.TimelineActivity"
     tools:showIn="@layout/activity_timeline">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lvTweets"
+        android:id="@+id/rvTweets"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
