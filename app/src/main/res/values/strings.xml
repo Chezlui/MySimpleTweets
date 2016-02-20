@@ -4,5 +4,8 @@
     <string name="app_name">SimpleTweets</string>
     <string name="login_label">Connect with Twitter</string>
     <string name="title_activity_timeline">Home Timeline</string>
+    <string name="compose_tweet">Compose tweet</string>
+    <string name="title_compose_dialog">Compose your tweet</string>
+    <string name="et_whats_going_on">What\'s going on?</string>
 
 </resources>

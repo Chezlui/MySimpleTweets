@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="gray_text">#8f8f8f</color>
+        <color name="colorPrimary">#9E9E9E</color>
+        <color name="colorPrimaryDark">#757575</color>
+        <color name="colorAccent">#90A4AE</color>
+        <color name="background">#455A64</color>
+        <color name="text">#FFFFFF</color>
+        <color name="red">#ff0000</color>
 </resources>

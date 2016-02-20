@@ -1,12 +1,20 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.TweetsArrayAdapter;
+import com.codepath.apps.twitterclient.TwitterApplication;
+import com.codepath.apps.twitterclient.TwitterClient;
 import com.codepath.apps.twitterclient.adapters.DividerItemDecoration;
 import com.codepath.apps.twitterclient.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -27,7 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FlipInBottomXAnimator;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements DialogInterface.OnDismissListener{
     private static final String LOG_TAG = TimelineActivity.class.getSimpleName();
 
     private TwitterClient client;
@@ -64,6 +72,25 @@ public class TimelineActivity extends AppCompatActivity {
 
         client = TwitterApplication.getRestClient(); // singleton client
         populateTimeline();
+    }
+
+    // Inflate the menu; this adds items to the action bar if it is present.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeline, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_compose_tweet) {
+            showComposeDialog();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // Send an API request to get the timeline JSON
@@ -109,4 +136,18 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
+    private void showComposeDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeDialog composeDialog = ComposeDialog.newInstance();
+        composeDialog.show(fm, "Compose your tweet");
+    }
+
+    // Actions to perform when dialog is dismissed
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        // initialize everything and get tweets again
+        maxId = 0;
+        tweets.clear();
+        populateTimeline();
+    }
 }

@@ -10,6 +10,8 @@ import com.loopj.android.http.RequestParams;
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
 
+import java.io.UnsupportedEncodingException;
+
 /*
  * 
  * This is the object responsible for communicating with a REST API. 
@@ -60,4 +62,15 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	// Composing a tuit
+	public void sendTweet(AsyncHttpResponseHandler handler, String text) throws UnsupportedEncodingException {
+
+		String apiUrl = getApiUrl("statuses/update.json");
+		// Specify the params
+		RequestParams params = new RequestParams();
+		params.put("status", text);
+
+		// Execute the request
+		getClient().post(apiUrl, params, handler);
+		Log.d(LOG_TAG, "Text sended: " + text);
+	}
 }
