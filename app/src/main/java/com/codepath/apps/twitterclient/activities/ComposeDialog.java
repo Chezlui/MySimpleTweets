@@ -40,8 +40,6 @@ public class ComposeDialog extends DialogFragment {
     EditText etTweetText;
     @Bind(R.id.ivCloseCompose)
     ImageView ivCloseCompose;
-    @Bind(R.id.ivAvatar)
-    ImageView ivAvatar;
     @Bind(R.id.tvCharactersLeft)
     TextView tvCharactersLeft;
     @Bind(R.id.btTweetNow)
@@ -92,8 +90,10 @@ public class ComposeDialog extends DialogFragment {
                 tvCharactersLeft.setText("" + (MAX_CHARACTERS - s.length()));
                 if (s.length() > MAX_CHARACTERS) {
                     tvCharactersLeft.setTextColor(getResources().getColor(R.color.red));
+                    btTweetNow.setEnabled(false);
                 } else {
                     tvCharactersLeft.setTextColor(getResources().getColor(R.color.gray_text));
+                    btTweetNow.setEnabled(true);
                 }
                 Log.d(LOG_TAG, "Length: " + s.length());
             }

@@ -4,32 +4,61 @@ package com.codepath.apps.twitterclient.models;
  * Created by chezlui on 18/02/16.
  */
 
+import android.util.Log;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
-        [
-             {
+import org.parceler.Parcel;
 
-
-             }
-        ]
-
- */
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 // Parse the JSON + Store the data, encapsulate state logic or display logic
-public class Tweet {
+@Table(name = "Tweets")
+@Parcel(analyze={Tweet.class})
+public class Tweet extends Model implements Serializable {
     // Atrributes
+    @Expose
+    @Column (name = "body")
     @SerializedName("text")
-    private String body;
+    public String body;
+    @Expose
+    @Column (name = "user")
     @SerializedName("user")
-    private User user;
+    public User user;
+    @Expose
+    @Column (name = "created_at")
     @SerializedName("created_at")
-    private String createdAt;
+    public String createdAt;
+    @Expose
+    @Column (name = "uid")
     @SerializedName("id")
-    private long uid;
+    public long uid;
+
+    @Expose
+    @Column (name = "entities")
+    @SerializedName("entities")
+    public Entitie entities;
+
+    @Expose
+    @Column (name = "retweet_count")
+    @SerializedName("retweet_count")
+    public int retweet_count;
+
+    @Expose
+    @Column (name = "favorite_count")
+    @SerializedName("favorite_count")
+    public int favorite_count;
 
     public Tweet() {
-
+        super();
     }
 
     public User getUser() {
@@ -48,4 +77,33 @@ public class Tweet {
         return uid;
     }
 
+    public int getRetweet_count() {
+        return retweet_count;
+    }
+
+    public int getFavorite_count() {
+        return favorite_count;
+    }
+
+    public static List<Tweet> getAll() {
+        // This is how you execute a query
+        return new Select()
+                .from(Tweet.class)
+                .orderBy("uid DESC")
+                .execute();
+    }
+
+
+    public static void persistTweets(ArrayList<Tweet> newTweets) {
+        for (Tweet tweet : newTweets) {
+            User.persist(tweet.getUser());
+            tweet.save();
+        }
+        Log.d("Tweets", "Persisted " + newTweets.size() + " items");
+    }
+
+    public static void eraseTweets() {
+        new Delete().from(Tweet.class).execute();
+        new Delete().from(User.class).execute();
+    }
 }

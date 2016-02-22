@@ -32,6 +32,8 @@
         android:id="@+id/tvBody"
         android:gravity="top"
         android:textColor="@android:color/black"
+        android:autoLink="all"
+        android:linksClickable="true"
         android:layout_below="@+id/tvName"
         android:layout_alignLeft="@+id/tvName"
         android:layout_alignStart="@+id/tvName"

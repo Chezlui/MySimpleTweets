@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
 
     <string name="app_name">SimpleTweets</string>
     <string name="login_label">Connect with Twitter</string>
@@ -7,5 +7,13 @@
     <string name="compose_tweet">Compose tweet</string>
     <string name="title_compose_dialog">Compose your tweet</string>
     <string name="et_whats_going_on">What\'s going on?</string>
+    <string name="title_activity_detail">DetailActivity</string>
+
+
+    <string name="format_retweets_favorites">
+        <b><xliff:g id="retweets">%1$s</xliff:g></b> RETWEETS
+        \u00A0\u00A0\u00A0
+        <b><xliff:g id="favorites">%2$s</xliff:g></b> LIKES
+    </string>
 
 </resources>
