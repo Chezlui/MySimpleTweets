@@ -3,6 +3,7 @@ package com.codepath.apps.twitterclient.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -53,6 +52,7 @@ public class TimelineActivity extends AppCompatActivity implements DialogInterfa
     @Bind(R.id.rvTweets)
     RecyclerView rvTweets;
     private SwipeRefreshLayout swipe;
+    @Bind(R.id.fab) FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +62,13 @@ public class TimelineActivity extends AppCompatActivity implements DialogInterfa
         ButterKnife.bind(this);
 
         tweets = new ArrayList<>();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showComposeDialog();
+            }
+        });
 
         swipe = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipe.setOnRefreshListener(this);
@@ -96,25 +103,6 @@ public class TimelineActivity extends AppCompatActivity implements DialogInterfa
 
         client = TwitterApplication.getRestClient(); // singleton client
         populateTimeline(0);
-    }
-
-    // Inflate the menu; this adds items to the action bar if it is present.
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.timeline, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_compose_tweet) {
-            showComposeDialog();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     // Send an API request to get the timeline JSON

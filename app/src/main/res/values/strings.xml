@@ -15,5 +15,6 @@
         \u00A0\u00A0\u00A0
         <b><xliff:g id="favorites">%2$s</xliff:g></b> LIKES
     </string>
+    <string name="title_activity_temp">TempActivity</string>
 
 </resources>

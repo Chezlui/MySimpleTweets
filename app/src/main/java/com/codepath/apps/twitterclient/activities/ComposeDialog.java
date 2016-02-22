@@ -59,6 +59,7 @@ public class ComposeDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_compose, container);
         ButterKnife.bind(this, view);
+        btTweetNow.setEnabled(false);
         return view;
     }
 
@@ -95,6 +96,11 @@ public class ComposeDialog extends DialogFragment {
                     tvCharactersLeft.setTextColor(getResources().getColor(R.color.gray_text));
                     btTweetNow.setEnabled(true);
                 }
+
+                if(s.length() == 0) {
+                    btTweetNow.setEnabled(false);
+                }
+
                 Log.d(LOG_TAG, "Length: " + s.length());
             }
 
