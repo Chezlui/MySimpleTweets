@@ -34,6 +34,21 @@ public class User extends Model implements Serializable{
     @SerializedName("profile_image_url")
     public String profileImageUrl;
 
+    @Expose
+    @Column (name = "tagLine")
+    @SerializedName("description")
+    public String tagLine;
+
+    @Expose
+    @Column (name = "followersCount")
+    @SerializedName("followers_count")
+    public int followersCount;
+
+    @Expose
+    @Column (name = "followingCount")
+    @SerializedName("friends_count")
+    public String followingCount;
+
     public User() {
         super();
     }
@@ -52,6 +67,18 @@ public class User extends Model implements Serializable{
 
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+
+    public String getTagLine() {
+        return tagLine;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public String getFollowingCount() {
+        return followingCount;
     }
 
     public static void persist(User user) {

@@ -37,6 +37,7 @@ public class TweetsListFragment extends Fragment {
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter aTweets;
 
+
 //    @Bind(R.id.fab)
 //    FloatingActionButton fab;
 
@@ -56,13 +57,19 @@ public class TweetsListFragment extends Fragment {
 //                showComposeDialog();
 //            }
 //        });
+
+
+
         return v;
     }
 
     // logic
 
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(getActivity(), tweets);
         rvTweets.setAdapter(aTweets);
@@ -109,4 +116,7 @@ public class TweetsListFragment extends Fragment {
     public void addAll(List<Tweet> tweets) {
         aTweets.addAll(tweets);
     }
+
+
+
 }
