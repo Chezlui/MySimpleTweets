@@ -1,10 +1,12 @@
 package com.codepath.apps.twitterclient.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -76,6 +78,26 @@ public class ProfileActivity extends AppCompatActivity {
 
             ft.commit();
         }
+
+        tvFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UsersActivity.class);
+                intent.putExtra("screen_name", user.getUserName());
+                intent.putExtra("tab", 0);
+                startActivity(intent);
+            }
+        });
+
+        tvFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UsersActivity.class);
+                intent.putExtra("screen_name", user.getUserName());
+                intent.putExtra("tab", 1);
+                startActivity(intent);
+            }
+        });
     }
     private void populateProfileHeader(User user) {
         tvName.setText(user.getName());

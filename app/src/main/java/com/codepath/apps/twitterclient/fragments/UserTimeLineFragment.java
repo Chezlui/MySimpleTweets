@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class UserTimeLineFragment extends TweetsListFragment implements SwipeRefreshLayout.OnRefreshListener,
         DialogInterface.OnDismissListener {
-    private static final String LOG_TAG = MentionsTimeLineFragment.class.getSimpleName();
+    private static final String LOG_TAG = UserTimeLineFragment.class.getSimpleName();
 
     private TwitterClient client;
     private long maxId = 0;
@@ -86,7 +86,6 @@ public class UserTimeLineFragment extends TweetsListFragment implements SwipeRef
 
                                            ArrayList<Tweet> newTweets = (ArrayList<Tweet>) gson.fromJson(json.toString(), collectionType);
                                            findMaxId(newTweets);
-                                           Tweet.persistTweets(newTweets);
                                            addAll(newTweets);
                                            getAdapter().notifyDataSetChanged();
                                            if(swipe != null) {
@@ -133,7 +132,6 @@ public class UserTimeLineFragment extends TweetsListFragment implements SwipeRef
             maxId = 0;
             getAdapter().clear();
             // Delete ddbb
-            Tweet.eraseTweets();
             getUsersTimeLine(0);
         } else {
             Toast.makeText(getActivity(), "Network not available", Toast.LENGTH_LONG).show();

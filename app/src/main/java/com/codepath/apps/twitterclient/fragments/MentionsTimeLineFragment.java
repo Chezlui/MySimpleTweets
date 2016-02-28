@@ -75,7 +75,6 @@ public class MentionsTimeLineFragment extends TweetsListFragment implements Swip
 
                                        ArrayList<Tweet> newTweets = (ArrayList<Tweet>) gson.fromJson(json.toString(), collectionType);
                                        findMaxId(newTweets);
-                                       Tweet.persistTweets(newTweets);
                                        addAll(newTweets);
                                        getAdapter().notifyDataSetChanged();
                                        if(swipe != null) {
@@ -121,8 +120,6 @@ public class MentionsTimeLineFragment extends TweetsListFragment implements Swip
         if (Utility.isNetworkAvailable(getActivity())) {
             maxId = 0;
             getAdapter().clear();
-            // Delete ddbb
-            Tweet.eraseTweets();
             getMentionsTimeLine(0);
         } else {
             Toast.makeText(getActivity(), "Network not available", Toast.LENGTH_LONG).show();

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivProfileImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#2a82aa"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvName"
+        android:textColor="@android:color/black"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toEndOf="@+id/ivProfileImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor risus quis turpis auctor tincidunt in ut risus. Vestibulum et neque eget tortor vehicula tincidunt. Nulla fermentum augue ac arcu pharetra, quis congue dui molestie. Praesent ultrices ligula quis leo maximus, ac maximus leo semper."
+        android:id="@+id/tvBody"
+        android:gravity="top"
+        android:textColor="@android:color/black"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:layout_below="@+id/tvUserName"
+        android:layout_toEndOf="@+id/ivProfileImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@User"
+        android:id="@+id/tvUserName"
+        android:textSize="12sp"
+        android:textColor="@color/gray_text"
+        android:layout_below="@+id/tvName"
+        android:layout_alignStart="@+id/tvName" />
+
+</RelativeLayout>

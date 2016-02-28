@@ -1,6 +1,5 @@
 package com.codepath.apps.twitterclient.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,16 +7,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.fragments.HomeTimeLineFragment;
-import com.codepath.apps.twitterclient.fragments.MentionsTimeLineFragment;
+import com.codepath.apps.twitterclient.fragments.UserFollowersFragment;
+import com.codepath.apps.twitterclient.fragments.UserFriendsFragment;
 
-public class TimelineActivity extends AppCompatActivity  {
-    private static final String LOG_TAG = TimelineActivity.class.getSimpleName();
+public class UsersActivity extends AppCompatActivity  {
+    private static final String LOG_TAG = UsersActivity.class.getSimpleName();
+
+    public String screenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,43 +26,30 @@ public class TimelineActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new UsersPagerAdapter(getSupportFragmentManager()));
+        viewPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_timeline, menu);
-        return true;
-    }
+        screenName = getIntent().getStringExtra("screen_name");
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onProfileView(MenuItem item) {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
     }
 
     // Return the order of the fragments in the viewpager
-    public class TweetsPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"Home", "Mentions"};
+    public class UsersPagerAdapter extends FragmentPagerAdapter {
+        private String tabTitles[] = {"Followers", "Following"};
 
-        public TweetsPagerAdapter(FragmentManager fragmentManager) {
+        public UsersPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return new HomeTimeLineFragment();
+                return UserFollowersFragment.newInstance(screenName);
             } else if (position == 1) {
-                return new MentionsTimeLineFragment();
+                return UserFriendsFragment.newInstance(screenName);
             } else {
                 return null;
             }

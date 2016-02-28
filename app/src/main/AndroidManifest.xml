@@ -59,6 +59,9 @@
         <activity android:name=".activities.ProfileActivity"
             android:label="ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.UsersActivity"
+            android:label="Community"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
