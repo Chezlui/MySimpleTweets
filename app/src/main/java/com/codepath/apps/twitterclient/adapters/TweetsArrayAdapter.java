@@ -1,6 +1,7 @@
 package com.codepath.apps.twitterclient.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.activities.ProfileActivity;
 import com.codepath.apps.twitterclient.models.Tweet;
 
 import java.text.ParseException;
@@ -47,7 +49,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Tweet tweet = tweets.get(position);
+        final Tweet tweet = tweets.get(position);
 
         ((ViewHolderTweet)holder).tvName.setText(tweet.getUser().getName());
         ((ViewHolderTweet)holder).tvBody.setText(tweet.getBody());
@@ -56,6 +58,15 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((ViewHolderTweet) holder).ivProfileImage);
         ((ViewHolderTweet)holder).tvUserName.setText("@" + tweet.getUser().getUserName());
         ((ViewHolderTweet)holder).tvTimeElapsed.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+
+        ((ViewHolderTweet)holder).ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProfileActivity.class);
+                intent.putExtra("screen_name", tweet.getUser().getUserName());
+                mContext.startActivity(intent);
+            }
+        });
 
 
     }

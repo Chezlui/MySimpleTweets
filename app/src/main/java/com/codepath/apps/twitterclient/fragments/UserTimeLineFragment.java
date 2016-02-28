@@ -55,23 +55,23 @@ public class UserTimeLineFragment extends TweetsListFragment implements SwipeRef
         swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipe.setOnRefreshListener(this);
 
-        getMentionsTimeLine(0);
+        getUsersTimeLine(0);
     }
 
 
     @Override
     public void populateMore(int page) {
         super.populateMore(page);
-        getMentionsTimeLine(page);
+        getUsersTimeLine(page);
     }
 
 
     // Send an API request to get the timeline JSON
     // Fill the listview as well by creating the tweets objects from JSON
-    private void getMentionsTimeLine(final int page) {
+    private void getUsersTimeLine(final int page) {
         String screenName = getArguments().getString("screen_name");
         Log.d(LOG_TAG, "Trying to load page: " + page);
-        client.getMentionsTimeLine(new JsonHttpResponseHandler() {
+        client.getUserTimeLine(screenName, new JsonHttpResponseHandler() {
                                        // SUCCESS (use Array because we know it is an array
                                        @Override
                                        public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -113,8 +113,8 @@ public class UserTimeLineFragment extends TweetsListFragment implements SwipeRef
                                            Log.d(LOG_TAG, "Loaded " + newTweets.size() + " items from the ddbb");
                                        }
                                    },
-
-                maxId);
+                maxId
+        );
     }
 
     private void findMaxId(ArrayList<Tweet> newTweets) {
@@ -134,7 +134,7 @@ public class UserTimeLineFragment extends TweetsListFragment implements SwipeRef
             getAdapter().clear();
             // Delete ddbb
             Tweet.eraseTweets();
-            getMentionsTimeLine(0);
+            getUsersTimeLine(0);
         } else {
             Toast.makeText(getActivity(), "Network not available", Toast.LENGTH_LONG).show();
             swipe.setRefreshing(false);

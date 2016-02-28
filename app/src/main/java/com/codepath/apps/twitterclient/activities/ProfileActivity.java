@@ -47,7 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         client = TwitterApplication.getRestClient();
 
-        client.getUserInfo(new JsonHttpResponseHandler() {
+        String screenName = getIntent().getStringExtra("screen_name");
+
+        client.getAnyUserInfo(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d(LOG_TAG, response.toString());
@@ -58,9 +60,13 @@ public class ProfileActivity extends AppCompatActivity {
                 getSupportActionBar().setTitle("@" + user.getName());
                 populateProfileHeader(user);
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(LOG_TAG, errorResponse.toString());
+            }
         });
 
-        String screenName = getIntent().getStringExtra("screen_name");
 
         if (savedInstanceState == null) {
             UserTimeLineFragment userTimeLineFragment = UserTimeLineFragment.newInstance(screenName);
