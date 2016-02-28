@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +15,7 @@ import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.fragments.HomeTimeLineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimeLineFragment;
 
-public class TimelineActivity extends AppCompatActivity  {
+public class TimelineActivity extends BaseActivity  {
     private static final String LOG_TAG = TimelineActivity.class.getSimpleName();
 
     @Override
@@ -35,6 +34,7 @@ public class TimelineActivity extends AppCompatActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
         return true;
     }

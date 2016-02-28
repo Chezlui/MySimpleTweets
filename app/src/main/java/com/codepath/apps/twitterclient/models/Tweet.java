@@ -4,6 +4,7 @@ package com.codepath.apps.twitterclient.models;
  * Created by chezlui on 18/02/16.
  */
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -94,11 +95,16 @@ public class Tweet extends Model implements Serializable {
     }
 
 
-    public static void persistTweets(ArrayList<Tweet> newTweets) {
-        for (Tweet tweet : newTweets) {
-            User.persist(tweet.getUser());
-            tweet.save();
-        }
+    public static void persistTweets(final ArrayList<Tweet> newTweets) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                for (Tweet tweet : newTweets) {
+                    User.persist(tweet.getUser());
+                    tweet.save();
+                }
+            }
+        });
         Log.d("Tweets", "Persisted " + newTweets.size() + " items");
     }
 

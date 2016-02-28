@@ -12,6 +12,7 @@ import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.TwitterClient;
 import com.codepath.apps.twitterclient.Utility;
+import com.codepath.apps.twitterclient.activities.BaseActivity;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,10 +61,12 @@ public class HomeTimeLineFragment extends TweetsListFragment implements SwipeRef
     // Fill the listview as well by creating the tweets objects from JSON
     private void populateTimeline(final int page) {
         Log.d(LOG_TAG, "Trying to load page: " + page);
+        ((BaseActivity)getActivity()).showProgressBar();
         client.getHomeTimeline(new JsonHttpResponseHandler() {
                                    // SUCCESS (use Array because we know it is an array
                                    @Override
                                    public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                                       ((BaseActivity)getActivity()).hideProgressBar();
                                        Log.d("DEBUG", json.toString());
                                        Log.d("DEBUG", "max ID: " + maxId);
                                        // JSON here
@@ -89,6 +92,7 @@ public class HomeTimeLineFragment extends TweetsListFragment implements SwipeRef
                                    // FAILURE (Failure won't be an array)
                                    @Override
                                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                       ((BaseActivity)getActivity()).hideProgressBar();
                                        if (errorResponse != null) {
                                            Log.e(LOG_TAG, errorResponse.toString());
                                        }

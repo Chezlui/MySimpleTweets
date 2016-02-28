@@ -1,6 +1,7 @@
 package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.activities.BaseActivity;
 import com.codepath.apps.twitterclient.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,10 +30,26 @@ import java.util.List;
  */
 public class UserFollowersFragment extends UsersListFragment {
     private static final String LOG_TAG = UserFollowersFragment.class.getSimpleName();
+    public int downloaderTracker;
+    public int downloaderTrackObjective;
 
     private TwitterClient client;
 
     private SwipeRefreshLayout swipe;
+
+    // Create the Handler object (on the main thread by default)
+    Handler handler = new Handler();
+    // Define the code block to be executed
+    Runnable progessChecker = new Runnable() {
+        @Override
+        public void run() {
+            // Do something here on the main thread
+            handler.postDelayed(progessChecker, 200);
+            if (downloaderTracker >= downloaderTrackObjective) {
+                ((BaseActivity) getActivity()).hideProgressBar();
+            }
+        }
+    };
 
     public static UserFollowersFragment newInstance(String screenName) {
         UserFollowersFragment userTimeLineFragment = new UserFollowersFragment();
@@ -53,11 +71,13 @@ public class UserFollowersFragment extends UsersListFragment {
 
     private void getFollowersIds() {
         String screenName = getArguments().getString("screen_name");
+
         client.getFollowers(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
                 Log.d("DEBUG", json.toString());
-                Type type = new TypeToken<List<Long>>() {}.getType();
+                Type type = new TypeToken<List<Long>>() {
+                }.getType();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
                 try {
                     JSONArray arrayIds = json.getJSONArray("ids");
@@ -66,8 +86,6 @@ public class UserFollowersFragment extends UsersListFragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
 
                 Log.d(LOG_TAG, "Users ids added to the list: " + listIds.size());
             }
@@ -79,6 +97,7 @@ public class UserFollowersFragment extends UsersListFragment {
                 if (errorResponse != null) {
                     Log.e(LOG_TAG, errorResponse.toString());
                 }
+
             }
         });
     }
@@ -94,31 +113,45 @@ public class UserFollowersFragment extends UsersListFragment {
     // Send an API request to get the timeline JSON
     // Fill the listview as well by creating the tweets objects from JSON
     private void getUsers(final int page) {
+
         Log.d(LOG_TAG, "Trying to load page: " + page);
-        for (int i = page*10; i < (page+1)*10; i++) {
+        ((BaseActivity) getActivity()).showProgressBar();
+
+        // When downloadTracker reach 10 it will hideProgressBar
+        handler.post(progessChecker);
+
+        downloaderTrackObjective = (page + 1)*10 - 1;
+
+        for (int i = page * 10; i < (page + 1) * 10; i++) {
             client.getAnyUserInfo(listIds.get(i), new JsonHttpResponseHandler() {
-                                           // SUCCESS (use Array because we know it is an array
-                                           @Override
-                                           public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                                               Log.d("DEBUG", json.toString());
-                                               Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
+                        // SUCCESS (use Array because we know it is an array
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                            Log.d("DEBUG", json.toString());
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
 
-                                               User user = gson.fromJson(json.toString(), User.class);
-                                               getAdapter().addUser(user);
-                                               if(swipe != null) {
-                                                   swipe.setRefreshing(false);
-                                               }
-                                           }
+                            User user = gson.fromJson(json.toString(), User.class);
+                            getAdapter().addUser(user);
+                            if (swipe != null) {
+                                swipe.setRefreshing(false);
+                            }
+                            downloaderTracker++;
+                            Log.d(LOG_TAG, ""+  downloaderTracker);
+                        }
 
-                                           // FAILURE (Failure won't be an array)
-                                           @Override
-                                           public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                               if (errorResponse != null) {
-                                                   Log.e(LOG_TAG, errorResponse.toString());
-                                               }
-                                           }
-                                       }
+                        // FAILURE (Failure won't be an array)
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            if (errorResponse != null) {
+                                Log.e(LOG_TAG, errorResponse.toString());
+                            }
+                            downloaderTracker++;
+                            Log.d(LOG_TAG, ""+  downloaderTracker);
+                        }
+                    }
             );
         }
     }
+
+
 }

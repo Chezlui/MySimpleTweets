@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -13,7 +12,7 @@ import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.fragments.UserFollowersFragment;
 import com.codepath.apps.twitterclient.fragments.UserFriendsFragment;
 
-public class UsersActivity extends AppCompatActivity  {
+public class UsersActivity extends BaseActivity  {
     private static final String LOG_TAG = UsersActivity.class.getSimpleName();
 
     public String screenName;
