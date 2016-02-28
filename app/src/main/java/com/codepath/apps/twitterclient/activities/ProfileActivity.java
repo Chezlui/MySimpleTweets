@@ -3,6 +3,7 @@ package com.codepath.apps.twitterclient.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Bind(R.id.tvFollowers) TextView tvFollowers;
     @Bind(R.id.tvFollowing) TextView tvFollowing;
     @Bind(R.id.ivProfileImage) ImageView ivProfileImage;
+    @Bind(R.id.toolbar) Toolbar toolbar;
 
     private static final String LOG_TAG = ProfileActivity.class.getSimpleName();
 
@@ -39,7 +41,9 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
         client = TwitterApplication.getRestClient();
 
