@@ -49,6 +49,11 @@ public class MentionsTimeLineFragment extends TweetsListFragment implements Swip
         getMentionsTimeLine(0);
     }
 
+    @Override
+    public void populateMore(int page) {
+        super.populateMore(page);
+        getMentionsTimeLine(page);
+    }
 
 
     // Send an API request to get the timeline JSON

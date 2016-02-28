@@ -54,9 +54,16 @@ public class UserTimeLineFragment extends TweetsListFragment implements SwipeRef
 
         swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipe.setOnRefreshListener(this);
+
         getMentionsTimeLine(0);
     }
 
+
+    @Override
+    public void populateMore(int page) {
+        super.populateMore(page);
+        getMentionsTimeLine(page);
+    }
 
 
     // Send an API request to get the timeline JSON

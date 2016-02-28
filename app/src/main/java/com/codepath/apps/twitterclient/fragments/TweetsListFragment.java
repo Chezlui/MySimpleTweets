@@ -96,12 +96,13 @@ public class TweetsListFragment extends Fragment {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 // TODO reactivar
-               // populateTimeline(page);
+               populateMore(page);
             }
         });
 
-
     }
+
+    public void populateMore(int page) {};
 
     private void showComposeDialog() {
         FragmentManager fm = getChildFragmentManager();

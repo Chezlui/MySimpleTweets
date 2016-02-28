@@ -50,6 +50,11 @@ public class HomeTimeLineFragment extends TweetsListFragment implements SwipeRef
     }
 
 
+    @Override
+    public void populateMore(int page) {
+        super.populateMore(page);
+        populateTimeline(page);
+    }
 
     // Send an API request to get the timeline JSON
     // Fill the listview as well by creating the tweets objects from JSON
