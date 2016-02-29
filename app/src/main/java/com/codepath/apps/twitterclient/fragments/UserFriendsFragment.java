@@ -51,6 +51,12 @@ public class UserFriendsFragment extends UsersListFragment {
         }
     };
 
+    @Override
+    public void onPause() {
+        handler.removeCallbacks(progessChecker);
+        super.onPause();
+    }
+
     public static UserFriendsFragment newInstance(String screenName) {
         UserFriendsFragment userTimeLineFragment = new UserFriendsFragment();
         Bundle args = new Bundle();

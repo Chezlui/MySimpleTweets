@@ -51,6 +51,12 @@ public class UserFollowersFragment extends UsersListFragment {
         }
     };
 
+    @Override
+    public void onPause() {
+        handler.removeCallbacks(progessChecker);
+        super.onPause();
+    }
+
     public static UserFollowersFragment newInstance(String screenName) {
         UserFollowersFragment userTimeLineFragment = new UserFollowersFragment();
         Bundle args = new Bundle();

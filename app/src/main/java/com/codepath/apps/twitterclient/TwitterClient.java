@@ -107,6 +107,11 @@ public class TwitterClient extends OAuthBaseClient {
 	public void getAnyUserInfo(String screenName, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("users/show.json");
 
+		if(screenName == null || screenName == "") {
+			getUserInfo(handler);
+			return;
+		}
+
 		RequestParams params = new RequestParams();
 		params.put("screen_name", screenName);
 		getClient().get(apiUrl, params, handler);
@@ -134,5 +139,29 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("screen_name", screenName);
 		getClient().get(apiUrl, params, handler);
+	}
+
+	public void retweet(Long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/retweet/" + id + ".json");
+		getClient().post(apiUrl, null, handler);
+	}
+
+	public void unretweet(Long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/unretweet/" + id + ".json");
+		getClient().post(apiUrl, null, handler);
+	}
+
+	public void unlike(Long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		getClient().post(apiUrl, params, handler);
+	}
+
+	public void like(Long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		getClient().post(apiUrl, params, handler);
 	}
 }

@@ -57,7 +57,7 @@
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.ProfileActivity"
-            android:label="ProfileActivity"
+            android:label="Profile View"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.UsersActivity"
             android:label="Community"

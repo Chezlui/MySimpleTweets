@@ -44,7 +44,6 @@ public class BaseActivity extends AppCompatActivity {
     public void showProgressBar() {
         // Show progress item
         if (miActionProgressItem != null) {
-            Log.d(LOG_TAG, "Showing progress bar");
             miActionProgressItem.setVisible(true);
         }
     }
@@ -52,7 +51,6 @@ public class BaseActivity extends AppCompatActivity {
     public void hideProgressBar() {
         // Hide progress item
         if (miActionProgressItem != null) {
-            Log.d(LOG_TAG, "Hiding progress bar");
             miActionProgressItem.setVisible(false);
         }
     }

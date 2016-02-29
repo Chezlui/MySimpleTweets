@@ -62,4 +62,27 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivRetweet"
+        android:layout_marginTop="10dp"
+
+        android:src="@drawable/retweet"
+        android:tint="@color/gray_text"
+        android:layout_below="@+id/tvBody"
+        android:layout_alignStart="@+id/tvBody" />
+
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:padding="4dp"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/ivLike"
+        android:src="@drawable/like"
+        android:tint="@color/gray_text"
+        android:layout_toEndOf="@+id/ivRetweet"
+        android:layout_alignTop="@id/ivRetweet"
+        android:layout_alignBottom="@id/ivRetweet"/>
+
 </RelativeLayout>

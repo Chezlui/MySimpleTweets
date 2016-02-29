@@ -39,7 +39,7 @@ public class Tweet extends Model implements Serializable {
     @SerializedName("created_at")
     public String createdAt;
     @Expose
-    @Column (name = "uid")
+    @Column (name = "id")
     @SerializedName("id")
     public long uid;
 
@@ -57,6 +57,16 @@ public class Tweet extends Model implements Serializable {
     @Column (name = "favorite_count")
     @SerializedName("favorite_count")
     public int favorite_count;
+
+    @Expose
+    @Column (name = "favorited")
+    @SerializedName("favorited")
+    public boolean liked;
+
+    @Expose
+    @Column (name = "retweeted")
+    @SerializedName("retweeted")
+    public boolean retweeted;
 
     public Tweet() {
         super();

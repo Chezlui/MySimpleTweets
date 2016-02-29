@@ -2,6 +2,7 @@ package com.codepath.apps.twitterclient.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -30,12 +31,24 @@ import butterknife.ButterKnife;
 public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<Tweet> tweets;
     private Context mContext;
+    private onTweetInteraction mListener;
 
-    public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
+    public TweetsArrayAdapter(Context context, List<Tweet> tweets, onTweetInteraction listener) {
         this.mContext = context;
         this.tweets = tweets;
+        this.mListener = listener;
+        if (!(listener instanceof onTweetInteraction)){
+            throw new ClassCastException("The listener must implement onTweetInteraction");
+        }
     }
 
+    public interface onTweetInteraction {
+        public void onRetweet(Tweet tweet);
+        public void onUnretweet(Tweet tweet);
+
+        public void onLike(Tweet tweet);
+        public void onUnlike(Tweet tweet);
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,7 +61,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final Tweet tweet = tweets.get(position);
 
         ((ViewHolderTweet)holder).tvName.setText(tweet.getUser().getName());
@@ -68,6 +81,51 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         });
 
+        if(tweet.liked) {
+            ((ViewHolderTweet)holder).ivFavorited.setColorFilter(Color.argb(255,232,28,79));
+        } else {
+            ((ViewHolderTweet)holder).ivFavorited.setColorFilter(Color.argb(255,143,143,143));
+        }
+
+        if(tweet.retweeted) {
+            ((ViewHolderTweet)holder).ivRetweet.setColorFilter(Color.argb(255, 25, 207, 134));
+        } else {
+            ((ViewHolderTweet)holder).ivRetweet.setColorFilter(Color.argb(255,143,143,143));
+        }
+
+        ((ViewHolderTweet)holder).ivFavorited.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tweet.liked) {
+                    mListener.onUnlike(tweet);
+                    tweet.liked = false;
+                    ((ViewHolderTweet)holder).ivFavorited.setColorFilter(Color.argb(255,143,143,143));
+
+                } else {
+                    mListener.onLike(tweet);
+                    tweet.liked = true;
+                    ((ViewHolderTweet)holder).ivFavorited.setColorFilter(Color.argb(255,232,28,79));
+                }
+            }
+        });
+
+
+        ((ViewHolderTweet)holder).ivRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tweet.retweeted) {
+                    mListener.onUnretweet(tweet);
+                    tweet.retweeted = false;
+                    ((ViewHolderTweet)holder).ivRetweet.setColorFilter(Color.argb(255,143,143,143));
+
+                } else {
+                    mListener.onRetweet(tweet);
+                    tweet.retweeted = true;
+                    ((ViewHolderTweet)holder).ivRetweet.setColorFilter(Color.argb(255, 25, 207, 134));
+
+                }
+            }
+        });
 
     }
 
@@ -82,6 +140,8 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Bind(R.id.ivProfileImage) ImageView ivProfileImage;
         @Bind(R.id.tvTimeElapsed) TextView tvTimeElapsed;
         @Bind(R.id.tvName) TextView tvName;
+        @Bind(R.id.ivRetweet) ImageView ivRetweet;
+        @Bind(R.id.ivLike) ImageView ivFavorited;
 
         public ViewHolderTweet(View view) {
             super(view);
