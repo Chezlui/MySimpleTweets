@@ -25,6 +25,7 @@ import com.codepath.apps.twitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
@@ -43,6 +44,8 @@ public class TweetsListFragment extends Fragment implements TweetsArrayAdapter.o
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter aTweets;
 
+    String profileImageUrl;
+
     public static final String LOG_TAG = TweetsListFragment.class.getSimpleName();
 
 //    @Bind(R.id.fab)
@@ -58,15 +61,7 @@ public class TweetsListFragment extends Fragment implements TweetsArrayAdapter.o
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         ButterKnife.bind(this, v);
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showComposeDialog();
-//            }
-//        });
-
-
-
+        getProfileImage();
         return v;
     }
 
@@ -190,8 +185,27 @@ public class TweetsListFragment extends Fragment implements TweetsArrayAdapter.o
 
     private void showComposeDialog(String prefix) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        ComposeDialog composeDialog = ComposeDialog.newInstance(prefix);
+        ComposeDialog composeDialog = ComposeDialog.newInstance(profileImageUrl, prefix);
         composeDialog.show(fm, "Compose your tweet");
+    }
+
+    public void getProfileImage() {
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.getUserInfo(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    profileImageUrl = response.getString("profile_image_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(LOG_TAG, errorResponse.toString());
+            }
+        });
     }
 
 

@@ -2,7 +2,7 @@
 
 **MySimpleTweets** is an android app that allows a user to view his Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: **16** hours spent in total
+Time spent: **19** hours spent in total
 
 ## User Stories
 
@@ -22,7 +22,7 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 * [x] User can view following / followers list through the profile
-* [ ] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
+* [x] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
 * [x] When a network request is sent, user sees an [indeterminate progress indicator](http://guides.codepath.com/android/Handling-ProgressBars#progress-within-actionbar)
 * [x] User can **"reply" to any tweet on their home timeline**
   * [x] The user that wrote the original tweet is automatically "@" replied in compose
@@ -47,6 +47,8 @@ The following **additional** features are implemented:
 * [x] Added no network detection
 * [x] User can see others followers/following recursively
 * [x] Backwards navigation implemented in Toolbar
+* [x] Added image of the user when tweeting or responding
+* [x] Added Twitter icon for launcher
 
 * [ ] User can **select "reply" from detail view to respond to a tweet**
 * [ ] User can watch embedded video within the tweet

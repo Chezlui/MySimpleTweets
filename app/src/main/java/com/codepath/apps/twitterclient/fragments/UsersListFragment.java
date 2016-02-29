@@ -3,7 +3,6 @@ package com.codepath.apps.twitterclient.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.activities.ComposeDialog;
 import com.codepath.apps.twitterclient.adapters.DividerItemDecoration;
 import com.codepath.apps.twitterclient.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.twitterclient.adapters.UsersArrayAdapter;
@@ -100,11 +98,6 @@ public class UsersListFragment extends Fragment {
 
     public void populateMore(int page) {};
 
-    private void showComposeDialog() {
-        FragmentManager fm = getChildFragmentManager();
-        ComposeDialog composeDialog = ComposeDialog.newInstance();
-        composeDialog.show(fm, "Compose your tweet");
-    }
 
     public UsersArrayAdapter getAdapter() {
         return aUsers;

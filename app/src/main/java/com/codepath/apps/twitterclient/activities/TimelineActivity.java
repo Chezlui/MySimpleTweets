@@ -10,6 +10,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +18,16 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.TwitterApplication;
+import com.codepath.apps.twitterclient.TwitterClient;
 import com.codepath.apps.twitterclient.Utility;
 import com.codepath.apps.twitterclient.fragments.HomeTimeLineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimeLineFragment;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +35,7 @@ import butterknife.ButterKnife;
 public class TimelineActivity extends BaseActivity  {
     private static final String LOG_TAG = TimelineActivity.class.getSimpleName();
     String query;
+    String profileImageUrl;
 
     @Bind(R.id.viewpager) ViewPager viewPager;
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -50,6 +59,8 @@ public class TimelineActivity extends BaseActivity  {
                 showComposeDialog();
             }
         });
+
+        getProfileImage();
     }
 
     @Override
@@ -93,8 +104,8 @@ public class TimelineActivity extends BaseActivity  {
 
     // Return the order of the fragments in the viewpager
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"Home", "Mentions"};
 
+        private String tabTitles[] = {"Home", "Mentions"};
         public TweetsPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
@@ -119,8 +130,8 @@ public class TimelineActivity extends BaseActivity  {
         public int getCount() {
             return tabTitles.length;
         }
-    }
 
+    }
     public void onTweetSearch(View view) {
         if (!Utility.isNetworkAvailable(this)) {
             Toast.makeText(this, "Check your internet connection", Toast.LENGTH_LONG).show();
@@ -129,13 +140,32 @@ public class TimelineActivity extends BaseActivity  {
 
         // Launch Activity
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra("search", ((SearchView)view).getQuery());
+        intent.putExtra("search", ((SearchView)view).getQuery().toString());
         startActivity(intent);
     }
 
     private void showComposeDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        ComposeDialog composeDialog = ComposeDialog.newInstance();
+        ComposeDialog composeDialog = ComposeDialog.newInstance(profileImageUrl);
         composeDialog.show(fm, "Compose your tweet");
+    }
+
+    public void getProfileImage() {
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.getUserInfo(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    profileImageUrl = response.getString("profile_image_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(LOG_TAG, errorResponse.toString());
+            }
+        });
     }
 }

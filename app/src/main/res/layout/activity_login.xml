@@ -16,6 +16,16 @@
         android:onClick="loginToRest"
         android:background="@drawable/button_color"
         android:textColor="@android:color/white"
-        android:text="@string/login_label" />
+        android:text="@string/login_label"
+        android:id="@+id/button" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/twitter_icon"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/button"
+        android:layout_alignEnd="@id/button"/>
 
 </RelativeLayout>

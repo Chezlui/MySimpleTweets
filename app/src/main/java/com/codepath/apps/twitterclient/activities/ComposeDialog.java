@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.TwitterClient;
@@ -44,19 +45,23 @@ public class ComposeDialog extends DialogFragment {
     TextView tvCharactersLeft;
     @Bind(R.id.btTweetNow)
     Button btTweetNow;
+    @Bind(R.id.ivProfileImage) ImageView ivProfileImage;
 
     String prefix;
+    String profileImageUrl;
 
     public ComposeDialog() {
     }
 
-    public static ComposeDialog newInstance() {
+    public static ComposeDialog newInstance(String profileImageUrl) {
         ComposeDialog composeDialog = new ComposeDialog();
+        composeDialog.profileImageUrl = profileImageUrl;
         return composeDialog;
     }
 
-    public static ComposeDialog newInstance(String prefix) {
+    public static ComposeDialog newInstance(String profileImageUrl, String prefix) {
         ComposeDialog composeDialog = new ComposeDialog();
+        composeDialog.profileImageUrl = profileImageUrl;
         composeDialog.prefix = prefix;
         return composeDialog;
     }
@@ -76,9 +81,14 @@ public class ComposeDialog extends DialogFragment {
         getDialog().setTitle(R.string.title_compose_dialog);
         setListeners();
         if (prefix != null) {
-            etTweetText.setText(prefix);
-            etTweetText.setSelection(etTweetText.length() + 1);
+            etTweetText.setText(prefix + " ");
+            etTweetText.setSelection(etTweetText.length());
         }
+
+        if (profileImageUrl != null) {
+            Glide.with(getActivity()).load(profileImageUrl).into(ivProfileImage);
+        }
+
     }
 
 
