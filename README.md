@@ -57,7 +57,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://s3-eu-west-1.amazonaws.com/chezlui.freelancer/codepath/Simpletweets.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://s3-eu-west-1.amazonaws.com/chezlui.freelancer/codepath/Simpletweets3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
