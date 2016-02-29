@@ -45,11 +45,19 @@ public class ComposeDialog extends DialogFragment {
     @Bind(R.id.btTweetNow)
     Button btTweetNow;
 
+    String prefix;
+
     public ComposeDialog() {
     }
 
     public static ComposeDialog newInstance() {
         ComposeDialog composeDialog = new ComposeDialog();
+        return composeDialog;
+    }
+
+    public static ComposeDialog newInstance(String prefix) {
+        ComposeDialog composeDialog = new ComposeDialog();
+        composeDialog.prefix = prefix;
         return composeDialog;
     }
 
@@ -66,8 +74,11 @@ public class ComposeDialog extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         getDialog().setTitle(R.string.title_compose_dialog);
-        ButterKnife.bind(this, view);
         setListeners();
+        if (prefix != null) {
+            etTweetText.setText(prefix);
+            etTweetText.setSelection(etTweetText.length() + 1);
+        }
     }
 
 

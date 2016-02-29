@@ -48,6 +48,8 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public void onLike(Tweet tweet);
         public void onUnlike(Tweet tweet);
+
+        public void onReply(Tweet tweet);
     }
 
     @Override
@@ -78,6 +80,13 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Intent intent = new Intent(mContext, ProfileActivity.class);
                 intent.putExtra("screen_name", tweet.getUser().getUserName());
                 mContext.startActivity(intent);
+            }
+        });
+
+        ((ViewHolderTweet)holder).ivReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onReply(tweet);
             }
         });
 
@@ -142,6 +151,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Bind(R.id.tvName) TextView tvName;
         @Bind(R.id.ivRetweet) ImageView ivRetweet;
         @Bind(R.id.ivLike) ImageView ivFavorited;
+        @Bind(R.id.ivReply) ImageView ivReply;
 
         public ViewHolderTweet(View view) {
             super(view);

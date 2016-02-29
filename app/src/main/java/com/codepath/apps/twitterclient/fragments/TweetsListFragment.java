@@ -111,12 +111,6 @@ public class TweetsListFragment extends Fragment implements TweetsArrayAdapter.o
 
     public void populateMore(int page) {};
 
-    private void showComposeDialog() {
-        FragmentManager fm = getChildFragmentManager();
-        ComposeDialog composeDialog = ComposeDialog.newInstance();
-        composeDialog.show(fm, "Compose your tweet");
-    }
-
     public TweetsArrayAdapter getAdapter() {
         return aTweets;
     }
@@ -188,6 +182,17 @@ public class TweetsListFragment extends Fragment implements TweetsArrayAdapter.o
                 Log.e(LOG_TAG, "Unliked FAILED " + errorResponse.toString());
             }
         });    }
+
+    @Override
+    public void onReply(Tweet tweet) {
+        showComposeDialog("@" + tweet.getUser().getUserName());
+    }
+
+    private void showComposeDialog(String prefix) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        ComposeDialog composeDialog = ComposeDialog.newInstance(prefix);
+        composeDialog.show(fm, "Compose your tweet");
+    }
 
 
 }

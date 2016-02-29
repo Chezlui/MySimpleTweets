@@ -2,6 +2,7 @@ package com.codepath.apps.twitterclient.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,22 +21,35 @@ import com.codepath.apps.twitterclient.Utility;
 import com.codepath.apps.twitterclient.fragments.HomeTimeLineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimeLineFragment;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class TimelineActivity extends BaseActivity  {
     private static final String LOG_TAG = TimelineActivity.class.getSimpleName();
     String query;
+
+    @Bind(R.id.viewpager) ViewPager viewPager;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.tabs) PagerSlidingTabStrip tabStrip;
+    @Bind(R.id.fab) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
 
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showComposeDialog();
+            }
+        });
     }
 
     @Override
@@ -115,7 +129,13 @@ public class TimelineActivity extends BaseActivity  {
 
         // Launch Activity
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra("search", ((SearchView)view).getQuery().toString());
+        intent.putExtra("search", ((SearchView)view).getQuery());
         startActivity(intent);
+    }
+
+    private void showComposeDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeDialog composeDialog = ComposeDialog.newInstance();
+        composeDialog.show(fm, "Compose your tweet");
     }
 }
