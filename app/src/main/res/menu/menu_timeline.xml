@@ -11,4 +11,13 @@
         android:title="Profile"
         android:onClick="onProfileView" />
 
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_24dp"
+        android:orderInCategory="20"
+        android:title="Search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+
 </menu>

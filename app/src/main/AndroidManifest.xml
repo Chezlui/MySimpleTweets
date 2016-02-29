@@ -62,6 +62,9 @@
         <activity android:name=".activities.UsersActivity"
             android:label="Community"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.SearchActivity"
+            android:label="Search"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

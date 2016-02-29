@@ -61,6 +61,22 @@ public class TwitterClient extends OAuthBaseClient {
         Log.d(LOG_TAG, "Looked for data with max_id = " + offset);
 	}
 
+	// Get search
+	public void getSearch(String query, AsyncHttpResponseHandler handler, long offset) {
+		String apiUrl = getApiUrl("search/tweets.json");
+		// Specify the params
+		RequestParams params = new RequestParams();
+		params.put("q", query);
+		params.put("count", 25);
+		params.put("since_id", 1);
+        if (offset != 0) {
+            params.put("max_id", offset);
+        }
+		// Execute the request
+		getClient().get(apiUrl, params, handler);
+        Log.d(LOG_TAG, "Looked for data with max_id = " + offset);
+	}
+
 	// Composing a tuit
 	public void sendTweet(AsyncHttpResponseHandler handler, String text) throws UnsupportedEncodingException {
 

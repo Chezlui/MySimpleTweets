@@ -5,18 +5,24 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.Utility;
 import com.codepath.apps.twitterclient.fragments.HomeTimeLineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimeLineFragment;
 
 public class TimelineActivity extends BaseActivity  {
     private static final String LOG_TAG = TimelineActivity.class.getSimpleName();
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,28 @@ public class TimelineActivity extends BaseActivity  {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                TimelineActivity.this.query = query;
+
+                // perform query here
+                onTweetSearch(searchView);
+                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
+                // see https://code.google.com/p/android/issues/detail?id=24599
+                searchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -78,5 +105,17 @@ public class TimelineActivity extends BaseActivity  {
         public int getCount() {
             return tabTitles.length;
         }
+    }
+
+    public void onTweetSearch(View view) {
+        if (!Utility.isNetworkAvailable(this)) {
+            Toast.makeText(this, "Check your internet connection", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Launch Activity
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("search", ((SearchView)view).getQuery().toString());
+        startActivity(intent);
     }
 }
